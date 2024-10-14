@@ -22,13 +22,10 @@ export default function piwikExpandOnClick(): IDirective {
         dir: {},
       };
 
-      const wrapped = ExpandOnClick;
-      wrapped.mounted(element[0], binding);
-      element.on('$destroy', () => wrapped.unmounted(element[0], binding));
+      ExpandOnClick.mounted(element[0], binding);
+      element.on('$destroy', () => ExpandOnClick.unmounted(element[0], binding));
     },
   };
 }
 
-piwikExpandOnClick.$inject = [];
-
-angular.module('piwikApp').directive('piwikExpandOnClick', piwikExpandOnClick);
+window.angular.module('piwikApp').directive('piwikExpandOnClick', piwikExpandOnClick);

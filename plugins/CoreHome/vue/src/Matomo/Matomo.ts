@@ -5,7 +5,6 @@
  * @license http://www.gnu.org/licenses/gpl-3.0.html GPL v3 or later
  */
 
-import { IAngularEvent } from 'angular';
 import Periods from '../Periods/Periods';
 
 let originalTitle: string;
@@ -25,7 +24,7 @@ piwik.updateDateInTitle = function updateDateInTitle(date: string, period: strin
 
   if (originalTitle.indexOf(piwik.siteName) === 0) {
     const dateString = ` - ${Periods.parse(period, date).getPrettyString()} `;
-    document.title = `${piwik.siteName}${dateString}${originalTitle.substr(piwik.siteName.length)}`;
+    document.title = `${piwik.siteName}${dateString}${originalTitle.slice(piwik.siteName.length)}`;
   }
 };
 
@@ -61,12 +60,14 @@ piwik.postEventNoEmit = function postEventNoEmit(
 piwik.postEvent = function postMatomoEvent(
   eventName: string,
   ...args: any[] // eslint-disable-line
-): IAngularEvent {
+): void {
   piwik.postEventNoEmit(eventName, ...args);
 
   // required until angularjs is removed
-  const $rootScope = piwik.helper.getAngularDependency('$rootScope') as any; // eslint-disable-line
-  return $rootScope.$oldEmit(eventName, ...args);
+  window.angular.element(() => {
+    const $rootScope = piwik.helper.getAngularDependency('$rootScope') as any; // eslint-disable-line
+    $rootScope.$oldEmit(eventName, ...args);
+  });
 };
 
 const Matomo = piwik;

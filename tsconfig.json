@@ -20,12 +20,13 @@
       "webpack-env",
       "angular",
       "jquery",
-      "jqueryui"
+      "jqueryui",
+      "materialize-css",
+      "mousetrap",
+      "dotdotdot"
     ],
     "paths": {
-      "@/*": [
-        "src/*"
-      ]
+      "*": ["@types/*", "*"]
     },
     "lib": [
       "esnext",

@@ -11,7 +11,6 @@ namespace Piwik\DataTable;
 use Closure;
 use Piwik\Common;
 use Piwik\DataTable;
-use Piwik\DataTable\Renderer\Console;
 use Piwik\DataTable\Renderer\Html;
 
 /**
@@ -386,7 +385,7 @@ class Map implements DataTableInterface
      * query results into one DataTable w/ different rows differentiated by site ID.
      *
      * Note: This DataTable/Map will be destroyed and will be no longer usable after the tables have been merged into
-     *       the new dataTable to reduce memory usage. Destroying all DataTables witihn the Map also seems to fix a
+     *       the new dataTable to reduce memory usage. Destroying all DataTables within the Map also seems to fix a
      *       Segmentation Fault that occurred in the AllWebsitesDashboard when having > 16k sites.
      *
      * @return DataTable|Map
@@ -511,6 +510,19 @@ class Map implements DataTableInterface
             }
         }
         return array_values($data);
+    }
+
+    /**
+     * Delete row metadata by name in every row.
+     *
+     * @param       $name
+     * @param bool $deleteRecursiveInSubtables
+     */
+    public function deleteRowsMetadata($name, $deleteRecursiveInSubtables = false)
+    {
+        foreach ($this->getDataTables() as $table) {
+            $table->deleteRowsMetadata($name, $deleteRecursiveInSubtables);
+        }
     }
 
     /**
